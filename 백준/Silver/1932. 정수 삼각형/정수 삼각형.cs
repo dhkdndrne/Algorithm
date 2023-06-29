@@ -20,32 +20,21 @@ internal class Algorithm
 
 		for (int i = 1; i < size; i++)
 		{
-			triangle[i][0] += triangle[i - 1][0];		// index = 0
-			triangle[i][triangle[i].Length - 1] += triangle[i - 1][triangle[i - 1].Length - 1]; // index = length - 1
-
-			int bIndex = 0;
-			for (int j = 1; j < triangle[i].Length -1 ; j++)
+			for (int j = 0; j <= i ; j++)
 			{
-				int maxNum = int.MinValue;
-				for (int k = bIndex; k <= j; k++)
+				if (j == 0) triangle[i][j] += triangle[i - 1][j];
+				else if (i == j) triangle[i][j] += triangle[i - 1][j - 1];
+				else
 				{
-					int addNum = triangle[i][j] + triangle[i - 1][k];
-					
-					if (addNum > maxNum)
-						maxNum = addNum;
+					triangle[i][j] = Math.Max(triangle[i][j] + triangle[i-1][j-1],triangle[i][j] + triangle[i-1][j]);
 				}
-
-				triangle[i][j] = maxNum;
-				bIndex++;
 			}
 		}
 
 		int max = int.MinValue;
-
-		for (int i = 0; i < triangle[size - 1].Length; i++)
+		for (int i = 0; i < size; i++)
 		{
-			if (triangle[size - 1][i] > max)
-				max = triangle[size - 1][i];
+			max = Math.Max(triangle[size - 1][i],max);
 		}
 		
 		Write(max);
