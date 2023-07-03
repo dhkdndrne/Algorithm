@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using static System.Console;
 using System.Collections.Generic;
+using System.Text;
 
 internal class Algorithm
 {
@@ -18,9 +19,6 @@ internal class Algorithm
 	{
 		int cnt = 0;
 		
-		Dictionary<long, int> dic = new Dictionary<long, int>();
-		dic.Add(startNum, 1);
-
 		Queue<(long num,int count)> q = new Queue<(long,int)>();
 		q.Enqueue((startNum,cnt));
 
@@ -34,15 +32,13 @@ internal class Algorithm
 				return temp.count + 1;
 			}
 
-			if (!dic.ContainsKey(num * 2) && num * 2 <= target)
+			if (num * 2 <= target)
 			{
-				dic.Add(num * 2, 1);
 				q.Enqueue((num * 2,temp.count +1));
 			}
 
-			if (!dic.ContainsKey((num * 10) + 1) && (num * 10) + 1 <= target)
+			if ((num * 10) + 1 <= target)
 			{
-				dic.Add((num * 10) + 1, 1);
 				q.Enqueue(((num * 10) + 1,temp.count +1));
 			}
 		}
