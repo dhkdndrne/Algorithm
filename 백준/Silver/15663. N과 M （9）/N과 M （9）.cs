@@ -39,28 +39,20 @@ internal class Algorithm
 			{
 				sb.Append($"{arr[i]} ");
 			}
-
-			if (dic.TryGetValue(arr[0], out var list))
-			{
-				if (list.Contains(sb.ToString()))
-					return;
-			}
-			else dic.Add(arr[0], new List<string>());
-			
-			
-			dic[arr[0]].Add(sb.ToString());
 			
 			sb.Append("\n");
 			Write(sb.ToString());
 		}
 		else
 		{
+			int num = 0;
 			for (int i = 0; i < N; i++)
 			{
-				if(isVisted[i]) continue;
-
+				if(isVisted[i] || num == numArray[i]) continue;
+				
 				isVisted[i] = true;
 				arr[cnt] = numArray[i];
+				num = arr[cnt];
 				Find(cnt + 1, sb);
 				isVisted[i] = false;
 			}
