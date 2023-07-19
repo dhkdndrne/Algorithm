@@ -8,17 +8,16 @@ internal class Algorithm
 {
 	private static StreamReader sr = new StreamReader(new BufferedStream(OpenStandardInput()));
 
-
+	private static Dictionary<int, List<int>> dic;
+	private static int[] parentArr;
 	public static void Main(string[] args)
 	{
 		int N = int.Parse(sr.ReadLine());
-		bool findOne = false;
-
-		StringBuilder sb = new StringBuilder();
-		int[] parentArr = new int[N + 1];
+		
+		parentArr = new int[N + 1];
 		parentArr[1] = -1;
 		
-		Dictionary<int, List<int>> dic = new Dictionary<int, List<int>>();
+		dic = new Dictionary<int, List<int>>();
 
 		for (int i = 0; i < N - 1; i++)
 		{
@@ -34,7 +33,12 @@ internal class Algorithm
 			dic[node[1]].Add(node[0]);
 
 		}
+		FindParent();
+	}
 
+	private static void FindParent()
+	{
+		StringBuilder sb = new StringBuilder();
 		Queue<int> q = new Queue<int>();
 		q.Enqueue(1);
 
