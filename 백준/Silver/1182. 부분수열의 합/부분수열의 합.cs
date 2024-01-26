@@ -17,7 +17,7 @@ public class Solution
 
 	private int n, s, answer;
 	private int[] arr;
-	private bool[] visit;
+    
 	public void Sol()
 	{
 		var input = Array.ConvertAll(sr.ReadLine().Split(), int.Parse);
@@ -25,7 +25,6 @@ public class Solution
 
 		n = input[0];
 		s = input[1];
-		visit = new bool[n];
 
 		Find(0,0);
 
