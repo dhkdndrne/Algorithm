@@ -20,7 +20,7 @@ public class Solution
 	private int k, skipIndex;
 	private int[] answer;
 	private StringBuilder sb = new StringBuilder();
-	private bool[] visit;
+
 	public void Sol()
 	{
 		while (true)
@@ -34,8 +34,7 @@ public class Solution
 			k = list[0];
 		
 			answer = new int[k];
-			visit = new bool[k];
-        
+	        
 			list.RemoveAt(0);
 			list.Sort();
 
