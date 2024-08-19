@@ -5,50 +5,81 @@ using System.Linq;
 
 public class Solution 
 {
-		public int solution(int n, int[,] edge)
+		private int[] dist;
+	private List<(int,int)>[] list;
+	private Dictionary<int, int> dic = new Dictionary<int, int>();
+	public int solution(int n, int[,] edge)
+	{
+		list = new List<(int,int)>[n + 1];
+		dist = new int[n + 1]; 
+		
+		for (int i = 1; i <= n; i++)
 		{
-			int answer = 0;
-			int length = edge.GetLength(0);
+			list[i]= new List<(int, int)>();
+			dist[i] = int.MaxValue;
+		}
 
-			List<int> distance = Enumerable.Repeat(0, n).ToList();
-			Queue<int> q = new Queue<int>();
+		for (int i = 0; i < edge.GetLength(0); i++)
+		{
+			int node1 = edge[i, 0];
+			int node2 = edge[i, 1];
 
-			q.Enqueue(1);
-			distance[0] = 1;
+			list[node1].Add((node2,1));
+			list[node2].Add((node1,1));
 
-			while (q.Count > 0)
+		}
+		return Find(1, n);
+	}
+
+	private int Find(int start, int n)
+	{
+		bool[] isVisited = new bool[n + 1];
+		var pq = new SortedSet<(int, int)>(Comparer<(int, int)>.Create((a, b) =>
+		{
+			int result = a.Item2.CompareTo(b.Item2);
+			if (result == 0) return a.Item1.CompareTo(b.Item1);
+			return result;
+		}));
+		pq.Add((start, 0));
+		dist[start] = 0;
+
+		while (pq.Count > 0)
+		{
+			var current = pq.Min;
+			pq.Remove(current);
+
+			int node = current.Item1;
+			int currentDist = current.Item2;
+
+			if (!isVisited[node])
 			{
-				// 현재 방문노드
-				int node = q.Dequeue();
+				isVisited[node] = true;
 
-				for (int i = 0; i < length; i++)
+				foreach (var next in list[node])
 				{
-					//현재 노드와 연결된 노드 나올떄까지
-					if (node != edge[i, 0] && node != edge[i, 1])
-						continue;
+					int nextNode = next.Item1;
+					int weight = next.Item2;
+					int newDist = currentDist + weight;
 
-					//현재 노드와 연결된 나머지 노드
-					var otherNode = node == edge[i, 0] ? edge[i, 1] : edge[i, 0];
-
-					//node - 1 => 실제 숫자와 인덱스 맞추기위해 -1
-					if (distance[node - 1] == 0 || distance[otherNode - 1] != 0)
-						continue;
-
-					//거리 더해줌
-					distance[otherNode - 1] = distance[node - 1] + 1;
-					q.Enqueue(otherNode);
+					if (newDist < dist[nextNode])
+					{
+						dist[nextNode] = newDist;
+						pq.Add((nextNode, newDist));
+					}
 				}
 			}
-
-			distance = distance.OrderByDescending(i=>i).ToList();
-			int max = distance[0];
-
-			foreach (var dist in distance)
-			{
-				if (dist == max)
-					answer++;
-			}
-			
-			return answer;
 		}
+
+		int max = 0;
+		foreach (var length in dist)
+		{
+			if (length == int.MaxValue) continue; // Skip unvisited nodes
+			max = Math.Max(length, max);
+			if (dic.ContainsKey(length))
+				dic[length]++;
+			else dic.Add(length, 1);
+		}
+
+		return dic[max];
+	}
 }
