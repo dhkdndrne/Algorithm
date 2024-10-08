@@ -16,6 +16,7 @@ public class Solution
 	private int n; //세로
 	private int m; //가로
 	private string[,] board;
+	private bool[,,,] isVisit;
 	public void solution()
 	{
 		var input = Array.ConvertAll(ReadLine().Split(), int.Parse);
@@ -23,7 +24,8 @@ public class Solution
 		m = input[1];
 
 		board = new string[n, m];
-
+		isVisit = new bool[n, m, n, m];
+		
 		(int, int) R = (0, 0);
 		(int, int) B = (0, 0);
 		(int, int) O = (0, 0);
@@ -62,7 +64,7 @@ public class Solution
 		Queue<(int rx, int ry, int bx, int by, int cnt)> queue = new Queue<(int rx, int ry, int bx, int by, int cnt)>();
 		queue.Enqueue((R.x, R.y, B.x, B.y, 0));
 
-		var isVisit = new HashSet<(int, int, int, int)>();
+		
 		while (queue.Count > 0)
 		{
 			var cur = queue.Dequeue();
@@ -95,9 +97,9 @@ public class Solution
 					}
 				}
 
-				if (!isVisit.Contains((nrx, nry, nbx, nby)))
+				if (!isVisit[nry, nrx, nby, nbx])
 				{
-					isVisit.Add((nrx, nry, nbx, nby));
+					isVisit[nry, nrx, nby, nbx] = true;
 					queue.Enqueue((nrx, nry, nbx, nby, cnt + 1));
 				}
 			}
