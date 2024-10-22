@@ -17,7 +17,6 @@ public class Solution
 	{
 		int n = int.Parse(ReadLine());
 		int[] arr = new int[n];
-		int[] sumArr = new int[n + 1];
 		int totalDistance = 0;
 		
 		for (int i = 0; i < n; i++)
@@ -25,37 +24,27 @@ public class Solution
 			arr[i] = int.Parse(ReadLine());
 			totalDistance += arr[i];
 		}
-		
-		//누적합
-		for (int i = 1; i <= n; i++)
-		{
-			sumArr[i] = sumArr[i - 1] + arr[i - 1];
-		}
 
-		int answer = 0;
+		int max = 0;
 		int start = 0;
-		int end = 1;
-
-		while (start < n)
+		int sum = 0;
+		
+		for (int end = 0; end < n; end++)
 		{
-			int clockWiseDist = sumArr[end] - sumArr[start];
-			int countClockwiseDist = totalDistance - clockWiseDist;
+			sum += arr[end];
+			totalDistance -= arr[end];
 
-			int min = Math.Min(countClockwiseDist, clockWiseDist);
-
-			answer = Math.Max(answer, min);
-
-			end++;
-
-			if (end == n)
+			while (sum > totalDistance)
 			{
+				sum -= arr[start];
+				totalDistance += arr[start];
 				start++;
-				end = start + 1;
 
-				if (end >= n) end = 0;
+				max = Math.Max(max, Math.Min(sum, totalDistance));
 			}
+			max = Math.Max(max, sum);
 		}
 		
-		WriteLine(answer);
+		WriteLine(max);
 	}
 }
