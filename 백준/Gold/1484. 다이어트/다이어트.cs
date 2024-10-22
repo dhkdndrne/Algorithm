@@ -20,7 +20,7 @@ public class Solution
 		
 		int before = 1;
 		int current = 1;
-		double max = Math.Sqrt((double)G + Math.Pow((double)G / 2, 2));
+		double max = Math.Sqrt(Math.Pow((double)G,2));
 		
 		while (current <= (int)max)
 		{
